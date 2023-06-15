@@ -12,8 +12,63 @@
  * @return int 
  */
 int State::evaluate() {
+  // strong state value function to calculate the value of the state
 
-  return 0;
+  int value = 0;
+  int now_piece, oppn_piece;
+  auto self_board = this->board.board[this->player];
+  auto oppn_board = this->board.board[1 - this->player];
+
+  for (int i = 0; i < BOARD_H; i += 1) {
+    for (int j = 0; j < BOARD_W; j += 1) {
+      if ((now_piece = self_board[i][j])) {
+        switch (now_piece) {
+          case 1://pawn
+            value += 100;
+            break;
+          case 2://knight
+            value += 320;
+            break;
+          case 3://bishop
+            value += 330;
+            break;
+          case 4://rook
+            value += 500;
+            break;
+          case 5://queen
+            value += 900;
+            break;
+          case 6://king
+            value += 20000;
+            break;
+        }
+      }
+      if ((oppn_piece = oppn_board[i][j])) {
+        switch (oppn_piece) {
+          case 1://pawn
+            value -= 100;
+            break;
+          case 2://knight
+            value -= 320;
+            break;
+          case 3://bishop
+            value -= 330;
+            break;
+          case 4://rook
+            value -= 500;
+            break;
+          case 5://queen
+            value -= 900;
+            break;
+          case 6://king
+            value -= 20000;
+            break;
+        }
+      }
+    }
+  }
+
+  return value;
 }
 
 
