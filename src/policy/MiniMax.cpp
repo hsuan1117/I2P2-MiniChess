@@ -13,7 +13,9 @@ using namespace std;
  * @return <Move, value>
  */
 std::pair<Move, int> MiniMax::get_move(State *state, int depth, bool maximizing_player) {
-  if (depth == 0 || state->legal_actions.empty()) {
+  if (state->legal_actions.empty())
+    state->get_legal_actions();
+  if (depth == 0) {
     // evaluate
     return mp(mp(mp(-1, -1), mp(-1, -1)), state->evaluate());
   }

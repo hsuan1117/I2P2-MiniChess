@@ -12,8 +12,6 @@
  * @return int 
  */
 int State::evaluate() {
-  // strong state value function to calculate the value of the state
-
   int value = 0;
   int now_piece, oppn_piece;
   auto self_board = this->board.board[this->player];
