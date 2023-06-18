@@ -24,13 +24,13 @@ int State::evaluate() {
           case 1://pawn
             value += 100;
             break;
-          case 2://knight
+          case 3://knight
             value += 320;
             break;
-          case 3://bishop
+          case 4://bishop
             value += 330;
             break;
-          case 4://rook
+          case 2://rook
             value += 500;
             break;
           case 5://queen
@@ -46,13 +46,13 @@ int State::evaluate() {
           case 1://pawn
             value -= 100;
             break;
-          case 2://knight
+          case 3://knight
             value -= 320;
             break;
-          case 3://bishop
+          case 4://bishop
             value -= 330;
             break;
-          case 4://rook
+          case 2://rook
             value -= 500;
             break;
           case 5://queen

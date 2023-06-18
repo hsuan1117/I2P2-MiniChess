@@ -53,12 +53,12 @@ class State{
     Board board;
     int player = 0;
     std::vector<Move> legal_actions;
-    
+
     State(){};
     State(int player): player(player){};
     State(Board board): board(board){};
     State(Board board, int player): board(board), player(player){};
-    
+
     State* next_state(Move move);
     void get_legal_actions();
     std::string encode_output();
@@ -74,7 +74,7 @@ class State{
 State* State::next_state(Move move){
   Board next = this->board;
   Point from = move.first, to = move.second;
-  
+
   int8_t moved = next.board[this->player][from.first][from.second];
   //promotion for pawn
   if(moved == 1 && (to.first==BOARD_H-1 || to.first==0)){
@@ -83,12 +83,12 @@ State* State::next_state(Move move){
   if(next.board[1-this->player][to.first][to.second]){
     next.board[1-this->player][to.first][to.second] = 0;
   }
-  
+
   next.board[this->player][from.first][from.second] = 0;
   next.board[this->player][to.first][to.second] = moved;
-  
+
   State* next_state = new State(next, 1-this->player);
-  
+
   if(this->game_state != WIN)
     next_state->get_legal_actions();
   return next_state;
@@ -112,8 +112,14 @@ static const int move_table_knight[8][2] = {
   {-2, 1}, {-2, -1},
 };
 static const int move_table_king[8][2] = {
-  {1, 0}, {0, 1}, {-1, 0}, {0, -1}, 
-  {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
+        {1, 0},
+        {0, 1},
+        {-1, 0},
+        {0, -1},
+        {1, 1},
+        {1, -1},
+        {-1, 1},
+        {-1, -1},
 };
 
 
@@ -129,7 +135,7 @@ void State::get_legal_actions(){
   std::vector<Move> all_actions;
   auto self_board = this->board.board[this->player];
   auto oppn_board = this->board.board[1 - this->player];
-  
+
   int now_piece, oppn_piece;
   for(int i=0; i<BOARD_H; i+=1){
     for(int j=0; j<BOARD_W; j+=1){
@@ -179,7 +185,7 @@ void State::get_legal_actions(){
               }
             }
             break;
-          
+
           case 2: //rook
           case 4: //bishop
           case 5: //queen
@@ -194,13 +200,13 @@ void State::get_legal_actions(){
               auto move_list = move_table_rook_bishop[part];
               for(int k=0; k<std::max(BOARD_H, BOARD_W); k+=1){
                 int p[2] = {move_list[k][0] + i, move_list[k][1] + j};
-                
+
                 if(p[0]>=BOARD_H || p[0]<0 || p[1]>=BOARD_W || p[1]<0) break;
                 now_piece = self_board[p[0]][p[1]];
                 if(now_piece) break;
-                
+
                 all_actions.push_back(Move(Point(i, j), Point(p[0], p[1])));
-                
+
                 oppn_piece = oppn_board[p[0]][p[1]];
                 if(oppn_piece){
                   if(oppn_piece==6){
@@ -213,17 +219,17 @@ void State::get_legal_actions(){
               }
             }
             break;
-          
+
           case 3: //knight
             for(auto move: move_table_knight){
               int x = move[0] + i;
               int y = move[1] + j;
-              
+
               if(x>=BOARD_H || x<0 || y>=BOARD_W || y<0) continue;
               now_piece = self_board[x][y];
               if(now_piece) continue;
               all_actions.push_back(Move(Point(i, j), Point(x, y)));
-              
+
               oppn_piece = oppn_board[x][y];
               if(oppn_piece==6){
                 this->game_state = WIN;
@@ -232,17 +238,17 @@ void State::get_legal_actions(){
               }
             }
             break;
-          
+
           case 6: //king
             for(auto move: move_table_king){
               int p[2] = {move[0] + i, move[1] + j};
-              
+
               if(p[0]>=BOARD_H || p[0]<0 || p[1]>=BOARD_W || p[1]<0) continue;
               now_piece = self_board[p[0]][p[1]];
               if(now_piece) continue;
-              
+
               all_actions.push_back(Move(Point(i, j), Point(p[0], p[1])));
-              
+
               oppn_piece = oppn_board[p[0]][p[1]];
               if(oppn_piece==6){
                 this->game_state = WIN;
@@ -298,7 +304,7 @@ std::string State::encode_output(){
     ss << "──┬";
   }
   ss << "─┬───┐\n";
-  
+
   for(int i=0; i<BOARD_H; i+=1){
     for(int j=0; j<BOARD_W; j+=1){
       ss << "│ ";
@@ -315,7 +321,7 @@ std::string State::encode_output(){
   }
   make_seperate_line(ss);
   add_axis(ss);
-  
+
   ss << "└";
   for(int w=0; w<BOARD_W; w+=1){
     for(int h=0; h<PIECE_STR_LEN; h+=1)
@@ -358,12 +364,12 @@ const std::string file_action = "action";
 
 void launch_executable(std::string filename) {
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-  //filename may has path in it. 
+  //filename may has path in it.
   //like "./build/player.exe" or ".\player.exe"
   size_t pos;
   std::string command = "start /min " + filename + " " + file_state + " " + file_action;
-  if((pos = filename.rfind("/"))!=std::string::npos || (pos = filename.rfind("\\"))!=std::string::npos)
-    filename = filename.substr(pos+1, std::string::npos);
+  if ((pos = filename.rfind("/")) != std::string::npos || (pos = filename.rfind("\\")) != std::string::npos)
+    filename = filename.substr(pos + 1, std::string::npos);
   std::string kill = "timeout /t " + std::to_string(timeout) + " > NUL && taskkill /im " + filename + " > NUL 2>&1";
   system(command.c_str());
   system(kill.c_str());
@@ -403,10 +409,10 @@ int main(int argc, char** argv) {
   std::string player_filename[3];
   player_filename[1] = argv[1];
   player_filename[2] = argv[2];
-  
+
   std::cout << "Player White File: " << player_filename[1] << std::endl;
   std::cout << "Player Black File: " << player_filename[2] << std::endl;
-  
+
   State game; game.get_legal_actions();
   State *temp;
   std::string data;
@@ -419,7 +425,7 @@ int main(int argc, char** argv) {
     data = game.encode_output();
     std::cout << data << std::endl;
     log << data << std::endl;
-    
+
     data = game.encode_state();
     std::ofstream fout(file_state);
     fout << data;
@@ -476,13 +482,13 @@ int main(int argc, char** argv) {
           << x_axis[action.second.second] << y_axis[action.second.first] << "\n";
     }
     game = *temp;
-    
+
     step += 1;
     if(step>MAX_STEP){
       int white_material = 0;
       int black_material = 0;
       int piece;
-      
+
       for(size_t i=0; i<BOARD_H; i+=1){
         for(size_t j=0; j<BOARD_W; j+=1){
           if((piece=game.board.board[0][i][j])){
@@ -504,18 +510,21 @@ int main(int argc, char** argv) {
       }
     }
   }
-  
+
   data = game.encode_output();
   std::cout << data << std::endl;
   log << data << std::endl;
-  if(game.game_state == WIN){
-    std::cout << "Player" << game.player+1 << " wins\n";
-    log << "Player" << game.player+1 << " wins\n";
-  }else{
+  if (game.game_state == WIN) {
+    std::cout << "Player" << game.player + 1 << " wins\n";
+    log << "Player" << game.player + 1 << " wins\n";
+  } else {
     std::cout << "Draw\n";
     log << "Draw\n";
   }
-  
+
+  std::cout << "Player White File: " << player_filename[1] << std::endl;
+  std::cout << "Player Black File: " << player_filename[2] << std::endl;
+
   log.close();
   // Reset state file
   if (remove(file_state.c_str()) != 0)
