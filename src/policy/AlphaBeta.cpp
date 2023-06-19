@@ -1,4 +1,4 @@
-#include "submission.hpp"
+#include "AlphaBeta.hpp"
 #include "../state/state.hpp"
 #include <cstdlib>
 
@@ -6,13 +6,13 @@ using namespace std;
 #define mp std::make_pair
 
 /**
- * @brief Get a legal action using MiniMax algorithm
+ * @brief Get a legal action using AlphaBeta algorithm
  *
  * @param state Now state
  * @param depth You may need this for other policy
  * @return <Move, value>
  */
-std::pair<Move, int> MiniMax::get_move(State *state, int alpha, int beta, int depth, bool maximizing_player) {
+std::pair<Move, int> AlphaBeta::get_move(State *state, int alpha, int beta, int depth, bool maximizing_player) {
   if (depth == 0 || state->legal_actions.empty()) {
     return mp(mp(mp(-1, -1), mp(-1, -1)), state->evaluate() * (maximizing_player ? 1 : -1));
   }

@@ -3,8 +3,6 @@
 
 #include "../config.hpp"
 #include "../policy/MiniMax.hpp"
-#include "../policy/random.hpp"
-#include "../state/state.hpp"
 
 
 State *root;
@@ -52,7 +50,7 @@ void write_valid_spot(std::ofstream &fout) {
     // Choose a random spot.
     //    auto pr = Random::get_move(root, depth++);
     //    auto move = pr;
-    auto pr = MiniMax::get_move(root, -INT_MAX, INT_MAX, depth, 1 - root->player);
+    auto pr = MiniMax::get_move(root, depth, 1 - root->player);
     auto move = pr.first;
     auto value = pr.second;
     fout << move.first.first << " " << move.first.second << " "
