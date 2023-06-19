@@ -524,6 +524,8 @@ int main(int argc, char** argv) {
 
   std::cout << "Player White File: " << player_filename[1] << std::endl;
   std::cout << "Player Black File: " << player_filename[2] << std::endl;
+  log << "Player White File: " << player_filename[1] << std::endl;
+  log << "Player Black File: " << player_filename[2] << std::endl;
 
   log.close();
   // Reset state file

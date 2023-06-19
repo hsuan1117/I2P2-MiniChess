@@ -1,7 +1,7 @@
 # Report
 
-採用 MiniMax + Alpha-Beta Pruning 來實作 AI
-State Function 的部分：
+Using MiniMax + Alpha-Beta Pruning implementing AI  
+State Function Part:
 
 ```javascript
 if ((now_piece = self_board[i][j])) {
@@ -52,8 +52,8 @@ if ((oppn_piece = oppn_board[i][j])) {
 
 ## get_move
 
-player_0 先下 max -> min
-player_1 後下 min -> max
+player_0 First `max -> min`
+player_1 Last `min -> max`
 
 ```c++
 MiniMax::get_move(root, -INT_MAX, INT_MAX, depth, 1 - root->player);
