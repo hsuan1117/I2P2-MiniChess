@@ -7,3 +7,5 @@ state
 ~$*
 cmake-build-debug
 .idea
+venv
+log.txt
