@@ -4,6 +4,7 @@
 
 #include "../config.hpp"
 #include "./state.hpp"
+#include <climits>
 
 
 /**
