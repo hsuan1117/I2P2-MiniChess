@@ -17,8 +17,17 @@ int State::evaluate() {
   auto self_board = this->board.board[this->player];
   auto oppn_board = this->board.board[1 - this->player];
 
+  if (this->game_state == WIN) {
+    return INT_MAX;
+  } else if (this->game_state == DRAW) {
+    return 0;
+  }
+
   for (int i = 0; i < BOARD_H; i += 1) {
     for (int j = 0; j < BOARD_W; j += 1) {
+      // mul a factor to make the value of different place different
+      value += (i + j) * 10;
+
       if ((now_piece = self_board[i][j])) {
         switch (now_piece) {
           case 1://pawn

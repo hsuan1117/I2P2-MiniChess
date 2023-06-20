@@ -42,7 +42,7 @@ void read_board(std::ifstream &fin) {
 void write_valid_spot(std::ofstream &fout) {
   // keep updating the output until getting killed.
   std::fstream logout("log.txt", std::ios::in | std::ios::out | std::ios::app);
-  int depth = 3;
+  int depth = 2;
   while (true) {
     if (depth > 6)
       break;

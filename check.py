@@ -3,37 +3,35 @@ import os
 import subprocess
 
 result = []
-os.system("make clean")
-os.system("make")
+os.system("make submission")
 for baseline in os.listdir('./baselines/mac-arm'):
     if not os.path.isdir(baseline):
-        for player in os.listdir('./build'):
-            if not os.path.isdir(player) and player.startswith('player_'):
-                print(f'\n=== Testing {player} vs {baseline} ===')
-                if "Player1 wins" in subprocess.check_output([
-                    './build/main',
-                    f"./build/{player}",
-                    f"./baselines/mac-arm/{baseline}"
-                ]).decode("utf-8"):
-                    result.append((player, baseline, True))
-                    print('✅ 驗證成功')
-                else:
-                    result.append((player, baseline, False))
-                    print('❌ 驗證失敗')
-                print()
+        player = "player_submission"
+        print(f'\n=== Testing {player} vs {baseline} ===')
+        if "Player1 wins" in subprocess.check_output([
+            './build/main',
+            f"./build/{player}",
+            f"./baselines/mac-arm/{baseline}"
+        ]).decode("utf-8"):
+            result.append((player, baseline, True))
+            print('✅ 驗證成功')
+        else:
+            result.append((player, baseline, False))
+            print('❌ 驗證失敗')
+        print()
 
-                print(f'\n=== Testing {baseline} vs {player} ===')
-                if "Player2 wins" in subprocess.check_output([
-                    './build/main',
-                    f"./baselines/mac-arm/{baseline}",
-                    f"./build/{player}"
-                ]).decode("utf-8"):
-                    result.append((baseline, player, True))
-                    print('✅ 驗證成功')
-                else:
-                    result.append((baseline, player, False))
-                    print('❌ 驗證失敗')
-                print()
+        print(f'\n=== Testing {baseline} vs {player} ===')
+        if "Player2 wins" in subprocess.check_output([
+            './build/main',
+            f"./baselines/mac-arm/{baseline}",
+            f"./build/{player}"
+        ]).decode("utf-8"):
+            result.append((baseline, player, True))
+            print('✅ 驗證成功')
+        else:
+            result.append((baseline, player, False))
+            print('❌ 驗證失敗')
+        print()
 
 print('\n=== Result ===')
 counter = 0
