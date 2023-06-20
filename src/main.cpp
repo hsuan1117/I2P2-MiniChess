@@ -261,7 +261,7 @@ void State::get_legal_actions(){
       }
     }
   }
-  std::cout << "\n";
+  // std::cout << "\n";
   this->legal_actions = all_actions;
 }
 
@@ -474,6 +474,7 @@ int main(int argc, char** argv) {
       break;
     } else{
       temp = game.next_state(action);
+      std::cout << "\033[2;45r" << std::endl;
       std::cout << "Depth: " << total << std::endl;
       std::cout << x_axis[action.first.second] << y_axis[action.first.first] << " → " \
                 << x_axis[action.second.second] << y_axis[action.second.first] << "\n";
