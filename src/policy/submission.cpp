@@ -1,5 +1,6 @@
 #include "submission.hpp"
 #include "../state/state.hpp"
+#include <climits>
 #include <cstdlib>
 
 using namespace std;
